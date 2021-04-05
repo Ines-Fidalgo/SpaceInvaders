@@ -8,9 +8,22 @@ public class Fire : MonoBehaviour
 
     [SerializeField]
     float força = 500f;
+
+   
     void Start()
     {
         GetComponent<Rigidbody2D>().AddForce  (Vector2.up * força);
+
     }
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Player" || collision.gameObject.tag == "Indestrutivel")
+        {
+            Destroy(gameObject);
+        }
+    }
+
+
+        
 }
    

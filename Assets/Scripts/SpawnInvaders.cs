@@ -9,6 +9,9 @@ public class SpawnInvaders : MonoBehaviour
     GameObject[] invasores;
 
     [SerializeField]
+    GameObject[] invasoresIndestrutiveis;
+
+    [SerializeField]
     int nInvasores = 7;
 
     [SerializeField]
@@ -20,6 +23,18 @@ public class SpawnInvaders : MonoBehaviour
     [SerializeField]
     float yInc = 0.5f;
 
+    [SerializeField]
+    float probabilidadeDeIndestrutivel = 0.00000001f;
+
+    float xMinimo, xMaximo;
+
+    bool mov = true;
+
+    bool verticalMov = true;
+
+    [SerializeField]
+    float velocidade = 0.005f;
+
     void Awake()
     {
         float y = yMin;
@@ -28,9 +43,19 @@ public class SpawnInvaders : MonoBehaviour
             float x = xMin;
             for (int i = 1; i <= nInvasores; i++) //for {inicio, fim, e como chega lá}
             {
-                GameObject newInvader = Instantiate(invasores[line], transform);
-                newInvader.transform.position = new Vector3(x, y, 0f);
-                x += 1f;
+                if(Random.value <= probabilidadeDeIndestrutivel)
+                {
+                    GameObject newInvader = Instantiate(invasoresIndestrutiveis[line], transform);
+                    newInvader.transform.position = new Vector3(x, y, 0f);
+                    x += 1f;
+                }
+                else
+                {
+                    GameObject newInvader = Instantiate(invasores[line], transform);
+                    newInvader.transform.position = new Vector3(x, y, 0f);
+                    x += 1f;
+                }
+
             }
             y += yInc;
         }
@@ -74,9 +99,74 @@ public class SpawnInvaders : MonoBehaviour
         //float x5 = xMin;
         //for (int i = 1; i <= nInvasores; i++)
         //{
+        //{
         //    GameObject newInvader = Instantiate(invasorC, transform);
         //    newInvader.transform.position = new Vector3(x5, 2.5f, 0f);
         //    x5 += 1f;
         //}
     }
+
+    private void Start()
+    {
+        xMaximo = Camera.main.ViewportToWorldPoint(Vector2.one).x - 3.3f;
+        xMinimo = Camera.main.ViewportToWorldPoint(Vector2.zero).x + 3.3f;
+    }
+    private void Update()
+    {
+        Vector3 position = transform.position;
+        position.x = Mathf.Clamp(position.x, xMinimo, xMaximo);
+        transform.position = position;
+
+        if (mov == true)
+        {
+
+            transform.position += velocidade * Vector3.right;
+            if (position.x == xMaximo && verticalMov == true)
+            {
+                if (position.y <= -2)
+                {
+                    verticalMov = false;
+                }
+                else
+                {
+                    transform.position += 0.2f * Vector3.down;
+                }
+            }
+            if (position.x == xMaximo)
+            {
+                mov = false;
+            }
+
+        }
+        if (mov == false)
+        {
+            transform.position -= velocidade * Vector3.right;
+            if (position.x == xMinimo && verticalMov == true)
+            {
+                if (position.y <= -2)
+                {
+                    verticalMov = false;
+                }
+                else
+                {
+                    transform.position += 0.2f * Vector3.down;
+                }
+            }
+            if (position.x == xMinimo)
+            {
+                mov = true;
+            }
+        }
+       
+    }
 }
+
+    //if (hMov != 0f)
+    //    {
+    //        transform.position += hMov* velocidade * Vector3.right* Time.deltaTime;
+
+    //Vector3 position = transform.position;
+    //position.x = Mathf.Clamp(position.x, xMin, xMax);
+    //        transform.position = position;
+    //    }
+

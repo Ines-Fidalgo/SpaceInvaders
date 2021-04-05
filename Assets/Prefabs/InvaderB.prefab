@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6344993302593591280}
   - component: {fileID: 1541732351590362096}
   - component: {fileID: -9059908318762029176}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: InvaderB
-  m_TagString: Untagged
+  m_TagString: Destrutivel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -141,3 +141,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b0e5758f9bada46944064ac747d4e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Fire: {fileID: 3512913641753460161, guid: a8748f7f69f01f84ba24e31f1772de84, type: 3}
+  cadencia: 1.5
+  VidasInvasores: 10
+  probTiro: 0.15
